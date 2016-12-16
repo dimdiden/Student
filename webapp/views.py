@@ -7,22 +7,19 @@ from django.contrib.auth import login
 from webapp.models import Group, Student
 
 class HomeTemplateView(TemplateView):
-#	queryset = Group.objects.all()
+
 	template_name = "home.html"
-#	model = Group
-#	model = Student
 
 	def get_context_data(self, **kwargs):
 	    context = super(HomeTemplateView, self).get_context_data(**kwargs)
 	    dic = {}
-
+#populate dictionary dic with grups and number of the students
 	    for obj in Group.objects.all():
 			
 	    	stdcount = Student.objects.filter(group = obj.id).count()
 	    	dic.update({obj : stdcount})   	
 
 	    context['groups'] = dic
-#	    print(context)
 	    return context
 
 

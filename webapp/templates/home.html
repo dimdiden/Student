@@ -18,9 +18,9 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for group in groups %}
+			{% for group,stdcount in groups.items %}
 				<tr>
-					<td><a href="{{group.id}}"> {{group}}</a></td>
+					<td><a href="{{group.id}}"> {{group.name}}</a></td>
 					<td> {{ stdcount }}</a></td>
 				</tr>
 			{% endfor %}
