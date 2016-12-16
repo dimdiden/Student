@@ -6,24 +6,22 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login
 from webapp.models import Group, Student
 
-#def index(request):
-	#return render(request, 'home.html')
-
 class HomeTemplateView(TemplateView):
 #	queryset = Group.objects.all()
 	template_name = "home.html"
-	model = Group
+#	model = Group
 #	model = Student
 
 	def get_context_data(self, **kwargs):
 	    context = super(HomeTemplateView, self).get_context_data(**kwargs)
-#	    context["groups"] = Group.objects.all()
-	    context = { "groups" : Group.objects.all(), "fuck" : "FEYYAA" }
+	    dic = {}
 
-	    for i in Group.objects.all():
-	    	print(i.name)
+	    for obj in Group.objects.all():
+			
+	    	stdcount = Student.objects.filter(group = obj.id).count()
+	    	dic.update({obj : stdcount})   	
 
-#	    context["fuck"] = "HAHAHAHAHA"
+	    context['groups'] = dic
 #	    print(context)
 	    return context
 
@@ -39,18 +37,9 @@ def newgroup(request):
 	else:
 		return redirect('/')
 
-def contact(request):
-	return render(request, 'basic.html', {'keys':['I\'m a programma', 'ded@gmail.com']})
+#def contact(request):
+#	return render(request, 'basic.html', {'keys':['I\'m a programma', 'ded@email.com']})
 
-
-#class LoginFormView(FormView):
-	#template_name = 'login.html'
-	#form_class = AuthenticationForm
-	#success_url = reverse_lazy('home')
-
-	#def form_valid(self, form):
-		#login(self.request, form.get_user())
-		#return HttpResponseRedirect(self.success_url)
 
 
 
