@@ -1,5 +1,0 @@
-select gr.name, count(students.id) as st_count, starosta.name
-from webapp_group gr
-left join webapp_student students ON students.group_id = gr.id
-left join webapp_student starosta ON starosta.id = gr.head_id
-group by gr.name, starosta.name
