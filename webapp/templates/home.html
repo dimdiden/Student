@@ -1,31 +1,22 @@
 {% extends "header.html" %}
+{% block homecontent %}
+	<div class="row">
+	  <div class="col-sm-3">
+		<div class="well bs-sidebar" id="sidebar" style="background-color:#fff">
+		  <ul class="nav nav-pills nav-stacked">
+			<li><a href='/'>Home</a></li>
+			{% include "includes/addgroup.html" %}
+			</ul>
+		</div> <!--well bs-sidebar affix-->
+	  </div> <!--col-sm-2-->
+	  <div class="col-sm-9">		  
+		<div class='container-fluid'>
+			{% include "includes/grouptable.html" %}
+		</div>
+	  </div>
+	</div> 
+{% endblock homecontent %}
 
-{% block form %}
-<form action ="/newgroup/" method = "post"> {% csrf_token %}
-	<div class="form-group">
-		<label for="AddGroup">Add group</label>
-    	<input type="text" class="form-control" name="AddGroup" placeholder="Type group name">
-  	</div>
-  	<button type="submit" class="btn btn-default">Submit</button>
-</form>
-{% endblock form %}
-{% block content %}
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Group name</th>
-				<th>Number of Students</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for group,stdcount in groups.items %}
-				<tr>
-					<td><a href="{{group.id}}"> {{group.name}}</a></td>
-					<td> {{ stdcount }}</a></td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-<!--{% include "includes/htmlsnippet.html" %}-->
-{% endblock content %}
+
+
 	

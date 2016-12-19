@@ -20,11 +20,11 @@ class Student(models.Model):
 	brd_date = models.DateField(null=True)
 	ticket = models.IntegerField(null=True, unique=True)
 
-#	def __str__(self):
-#		return self.name
-
 	def __str__(self):
-		return u'%s %s %s %s' % (self.group, self.name, self.brd_date, self.ticket)
+		return self.name
+
+#	def __str__(self):
+#		return u'%s %s %s %s' % (self.group, self.name, self.brd_date, self.ticket)
 
 	def GetStundentCount(self):
 		return self.objects.count()
