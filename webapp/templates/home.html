@@ -1,5 +1,5 @@
 {% extends "header.html" %}
-{% block homecontent %}
+{% block content %}
 	<div class="row">
 	  <div class="col-sm-3">
 		<div class="well bs-sidebar" id="sidebar" style="background-color:#fff">
@@ -7,15 +7,15 @@
 			<li><a href='/'>Home</a></li>
 			{% include "includes/addgroup.html" %}
 			</ul>
-		</div> <!--well bs-sidebar affix-->
-	  </div> <!--col-sm-2-->
+		</div>
+	  </div>
 	  <div class="col-sm-9">		  
 		<div class='container-fluid'>
 			{% include "includes/grouptable.html" %}
 		</div>
 	  </div>
 	</div> 
-{% endblock homecontent %}
+{% endblock content %}
 
 
 

@@ -1,18 +1,15 @@
-{% extends "group.html" %}
-
-{% block content %}
-	<table class="table">
-		<thead>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Student Name (Group {{group.name}}) </th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for student in students %}
 			<tr>
-				<th>Student Name</th>
+				<td><a href="/group/{{student.id}}">{{student.name}}</a></td>
 			</tr>
-		</thead>
-		<tbody>
-			{% for student in object_list  %}
-				<tr>
-					<td>{{student.name}}</a></td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-{% endblock content %}
+		{% endfor %}
+	</tbody>
+</table>
+
