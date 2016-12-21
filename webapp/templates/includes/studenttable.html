@@ -7,9 +7,8 @@
 	<tbody>
 		{% for student in students %}
 			<tr>
-				<td><a href="/group/{{student.id}}">{{student.name}}</a></td>
+				<td><a href="/group/{{group.id}}/{{student.id}}">{{student.name}}</a></td>
 			</tr>
 		{% endfor %}
 	</tbody>
 </table>
-
