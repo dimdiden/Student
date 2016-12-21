@@ -9,14 +9,24 @@ class HomeTemplateView(TemplateView):
 
     template_name = "home.html"
 
+    def post(self, request, *args, **kwargs):
+        if request.POST['name']:
+            group_name = request.POST['name']
+            # http://stackoverflow.com/questions/8133505/django-templateview-and-form
+            Group.objects.create(name=group_name)
+            return redirect('/')
+
     def get_context_data(self, **kwargs):
         context = super(HomeTemplateView, self).get_context_data(**kwargs)
+        self.form = GroupForm()
+
         dic = {}
         # populate dictionary dic with grups and number of the students
         for obj in Group.objects.all():
             stdcount = Student.objects.filter(group=obj.id).count()
             dic.update({obj: [obj.name, stdcount, obj.head]})
 
+        context['form'] = self.form
         context['groups'] = dic
         return context
 
@@ -28,13 +38,15 @@ class StudentListView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(StudentListView, self).get_context_data(**kwargs)
-#        a = self.kwargs['pk']
-#        print(a)
+        # a = self.kwargs['pk']
+        # print(a)
         self.group = get_object_or_404(Group, id=self.kwargs['pk'])
+        self.form = StudentForm()
 
+        context['form'] = self.form
         context['students'] = Student.objects.filter(group=self.group)
         context['group'] = Group.objects.get(id=self.kwargs['pk'])
-#        print(context)
+        print(context)
         return context
 
 
@@ -44,7 +56,7 @@ class StudentForm(ModelForm):
         model = Student
         fields = '__all__'
 
-# http://stackoverflow.com/questions/401025/define-css-class-in-django-forms
+    # http://stackoverflow.com/questions/401025/define-css-class-in-django-forms
     def __init__(self, *args, **kwargs):
         super(StudentForm, self).__init__(*args, **kwargs)
         self.fields['name'].widget.attrs = {
@@ -71,7 +83,7 @@ class StudentListViewForm(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(StudentListViewForm, self).get_context_data(**kwargs)
         student_data = Student.objects.get(id=self.kwargs['st_pk'])
-#        print(student_data.name)
+        # print(student_data.name)
 
         self.form = StudentForm(initial={
             'group': student_data.group,
@@ -81,7 +93,7 @@ class StudentListViewForm(TemplateView):
         })
 
         context['form'] = self.form
-#        print(self.kwargs['st_pk'])
+        # print(self.kwargs['st_pk'])
         return context
 
 
@@ -91,7 +103,15 @@ class GroupForm(ModelForm):
         model = Group
         fields = '__all__'
 
+    def __init__(self, *args, **kwargs):
+        super(GroupForm, self).__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs = {
+            'class': 'form-control',
+            'placeholder': 'Group name'
+        }
 
+
+"""
 def newgroup(request):
     if request.method == "POST" and request.POST['AddGroup']:
         group_name = request.POST['AddGroup']
@@ -100,7 +120,7 @@ def newgroup(request):
         return redirect('/')
     else:
         return HttpResponse('You havn\'t submitted data')
-
+"""
 # def contact(request):
 # return render(request, 'basic.html', 
 # {'keys':['I\'m a programma', 'ded@email.com']})
