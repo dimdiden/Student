@@ -1,0 +1,15 @@
+<form action ="/update_st{{ for_del.get_absolute_url }}" method = "post"> {% csrf_token %}
+    <div class="form-group">
+        <label for="Student">Student</label>
+        {% load widget_tweaks %}
+        {{form_st.group}}
+        {{form_st.name}}
+        {{form_st.brd_date|attr:"type:date"}}
+        {{form_st.ticket}}
+    </div>
+    <button type="submit" class="btn btn-info">Update</button>
+</form>
+<form action="{% url 'delete_student' for_del.id %}" method="post"> {% csrf_token %}
+    <input type="hidden" name="delete_student">
+    <button type="submit" class="btn btn-danger">Delete!</button>
+</form>

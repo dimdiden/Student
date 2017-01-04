@@ -7,11 +7,11 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% for group, spec in groups.items %}
+		{% for item in groups.items %}
 			<tr>
-				<td><a href="/group/{{group.id}}"> {{spec.0}}</a></td>
-				<td> {{ spec.1 }}</a></td>
-				<td>{{ spec.2 }}</td>
+				<td><a href="{% url 'group' item.0.id %}"> {{item.0.name}}</a></td>
+				<td> {{ item.1 }}</a></td>
+				<td>{{ item.0.head }}</td>
 			</tr>	
 		{% endfor %}
 	</tbody>

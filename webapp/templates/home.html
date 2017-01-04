@@ -1,20 +1,11 @@
 {% extends "header.html" %}
+
+{% block options %}
+	{% include "includes/groupform.html" %}
+{% endblock options %}
+
 {% block content %}
-	<div class="row">
-	  <div class="col-sm-3">
-		<div class="well bs-sidebar" id="sidebar" style="background-color:#fff">
-		  <ul class="nav nav-pills nav-stacked">
-			<li><a href='/'>Home</a></li>			
-		  </ul>
-		</div>
-		{% include "includes/groupform.html" %}
-	  </div>
-	  <div class="col-sm-9">		  
-		<div class='container-fluid'>
-			{% include "includes/grouptable.html" %}
-		</div>
-	  </div>
-	</div> 
+	{% include "includes/grouptable.html" %}
 {% endblock content %}
 
 

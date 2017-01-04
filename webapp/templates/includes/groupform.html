@@ -1,7 +1,7 @@
-<form action ='/' method = "post"> {% csrf_token %}
+<form action ="{%url 'create_group' %}" method = "post"> {% csrf_token %}
     <div class="form-group">
-        <label for="AddGroup">Add group</label>
+        <label for="AddGroup">Group</label>
         {{form.name}}
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button type="submit" class="btn btn-success">Save New Group</button>
 </form>
