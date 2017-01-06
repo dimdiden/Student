@@ -7,11 +7,11 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% for item in groups.items %}
+		{% for item in object_list %}
 			<tr>
-				<td><a href="{% url 'group' item.0.id %}"> {{item.0.name}}</a></td>
-				<td> {{ item.1 }}</a></td>
-				<td>{{ item.0.head }}</td>
+				<td><a href="{% url 'group' item.id %}"> {{item.name}}</a></td>
+				<td>{{ item.get_student_count }}</a></td>
+				<td>{{ item.head }}</td>
 			</tr>	
 		{% endfor %}
 	</tbody>

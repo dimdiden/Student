@@ -1,8 +1,7 @@
-<form action ="{% url 'create_student' %}" method = "post"> {% csrf_token %}
+<form action ="{% url 'create_student' pk %}" method = "post"> {% csrf_token %}
     <div class="form-group">
         <label for="Student">Student</label>
         {% load widget_tweaks %}
-        {{form_st.group}}
         {{form_st.name}}
         {{form_st.brd_date|attr:"type:date"}}
         {{form_st.ticket}}

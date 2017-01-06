@@ -1,13 +1,13 @@
 <table class="table">
 	<thead>
 		<tr>
-			<th>Student Name (Group {{students.0.group}}) </th>
+			<th>Student Name (Group {{view.group.name}}) </th>
 			<th>Birth Date</th>
 			<th>Ticket</th>
 		</tr>
 	</thead>
 	<tbody>
-		{% for student in students %}
+		{% for student in student_list %}
 			<tr>
 				<td><a href="{% url 'studentform' student.group.id student.id %}">{{student.name}}</a></td>
 				<td>{{student.brd_date}}</td>

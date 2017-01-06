@@ -1,80 +1,75 @@
 from django.urls import reverse
 from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpResponse
-from django.views.generic import TemplateView, DetailView
-from django.views.generic.edit import DeleteView, UpdateView, CreateView
+from django.views.generic import ListView, FormView
+from django.views.generic.edit import DeleteView, UpdateView, CreateView, ModelFormMixin, ProcessFormView
+from django.views.generic.detail import SingleObjectMixin, SingleObjectTemplateResponseMixin
 from django.forms import ModelForm
 from webapp.models import Group, Student
 
 
-class HomeTemplateView(TemplateView):
+# ==> ListView doesn't provide post method
+#
+class HomeView(ListView):
 
+    model = Group
     template_name = "home.html"
 
     def get_context_data(self, **kwargs):
-        context = super(HomeTemplateView, self).get_context_data(**kwargs)
-        self.form = GroupForm(prefix='group')
-
-        dic = {}
-        # populate dictionary dic with grups and number of the students
-        for obj in Group.objects.all():
-            stdcount = Student.objects.filter(group=obj.id).count()
-            dic.update({obj: stdcount})
-
-        context['form'] = self.form
-        context['groups'] = dic
+        context = super(HomeView, self).get_context_data(**kwargs)
+        context['form'] = GroupForm(prefix='group')
         return context
 
 
-class StudentListView(DetailView):
+class StudentListView(ListView):
 
-    model = Group
+    model = Student
     template_name = "group.html"
+
+    def get_queryset(self):
+        qs = super(StudentListView, self).get_queryset()
+        return qs.filter(group=self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
         context = super(StudentListView, self).get_context_data(**kwargs)
-
         self.group = get_object_or_404(Group, id=self.kwargs['pk'])
-        self.form_st = StudentForm(prefix='student')
-        self.form_gr = GroupForm(
+        context['form_st'] = StudentForm(prefix='student')
+        context['form_gr'] = GroupForm(
             initial={
                 'name': self.group.name,
                 'head': self.group.head
             },
-            prefix='group'
+            prefix='group',
         )
-
-        context['form_st'] = self.form_st
-        context['form_gr'] = self.form_gr
-        context['students'] = Student.objects.filter(group=self.group)
-        context['group'] = self.group
-        # print(context)
+        context.update(self.kwargs)
         return context
 
 
-class StudentListViewForm(TemplateView):
+class StudentListViewForm(ListView):
 
+    model = Student
     template_name = "update_student.html"
+
+    def get_queryset(self):
+        qs = super(StudentListViewForm, self).get_queryset()
+        return qs.filter(group=self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
         context = super(StudentListViewForm, self).get_context_data(**kwargs)
         self.group = get_object_or_404(Group, id=self.kwargs['pk'])
-        student = Student.objects.get(id=self.kwargs['st_pk'])
-        # print(student_data.name)
+        self.student = get_object_or_404(Student, id=self.kwargs['st_pk'])
 
-        self.form = StudentForm(
+        context['form_st'] = StudentForm(
             initial={
-                'group': student.group,
-                'name': student.name,
-                'brd_date': student.brd_date,
-                'ticket': student.ticket
+                'group': self.student.group,
+                'name': self.student.name,
+                'brd_date': self.student.brd_date,
+                'ticket': self.student.ticket
             },
             prefix='student'
         )
-        context['for_del'] = student
-        context['form_st'] = self.form
-        context['students'] = Student.objects.filter(group=self.group)
-        context['group'] = self.group
+        context.update(self.kwargs)
+        print(context)
         return context
 
 
@@ -93,6 +88,9 @@ class GroupForm(ModelForm):
         self.fields['head'].widget.attrs = {
             'class': 'form-control',
         }
+        self.fields['head'].queryset = group.student_set.all()
+        print(kwargs)
+        #print(self.fields['head'].queryset)
 
 
 class StudentForm(ModelForm):
@@ -136,28 +134,42 @@ class CreateGroup(CreateView):
             return HttpResponse("Please enter the group")
 
 
+"""
+# ==> form_class and template_name are extra since
+# ==> we need only post method
+# ==> How are objects getting saved?
+class CreateGroup(FormView):
+    model = Group
+    form_class = GroupForm
+    template_name = 'home.html'
+
+    success_url = '/'
+
+    def post(self, request, *args, **kwargs):
+        print(request.POST)
+        self.object = None
+        return super(CreateGroup, self).post(request, *args, **kwargs)
+"""
+
+
 class CreateStudent(CreateView):
     model = Student
     form_class = StudentForm
 
     def post(self, request, *args, **kwargs):
-        # print(request.POST)
+        print(kwargs)
         if request.POST['student-name']:
-            student_group = request.POST['student-group']
             student_name = request.POST['student-name']
             student_brd_date = request.POST['student-brd_date']
             student_ticket = request.POST['student-ticket']
 
-            # print(request.POST)
             Student.objects.create(
                 name=student_name,
                 brd_date=student_brd_date,
                 ticket=student_ticket,
-                group=Group.objects.get(id=student_group)
+                group=Group.objects.get(id=kwargs['pk'])
             )
-            # a = reverse('group', kwargs={'pk': student_group})
-            # print(a)
-            return redirect(reverse('group', kwargs={'pk': student_group}))
+            return redirect(reverse('group', kwargs={'pk': kwargs['pk']}))
 
 
 class UpdateGroup(UpdateView):
@@ -210,16 +222,22 @@ class UpdateStudent(UpdateView):
             return redirect(reverse('group', kwargs={'pk': student_group}))
 
 
+class DeleteGroupView(DeleteView):
+    model = Group
+    success_url = "/"
+
+
 class DeleteStudentView(DeleteView):
     model = Student
 
     def get_success_url(self):
         item = self.get_object()
-        self.item = item.group.id
-        # print(self.item)           # -> 404
-        return reverse('group', kwargs={'pk': self.item})
+        return reverse('group', kwargs={'pk': item.group.id})
 
+#===> get classes shorterer
 
-class DeleteGroupView(DeleteView):
-    model = Group
-    success_url = "/"
+# https://docs.djangoproject.com/en/1.10/topics/class-based-views/mixins/
+# https://docs.djangoproject.com/en/1.10/ref/class-based-views/mixins/
+# http://stackoverflow.com/questions/17192737/django-class-based-view-for-both-create-and-update
+# http://stackoverflow.com/questions/19341568/listview-and-createview-in-one-template-django
+# http://stackoverflow.com/questions/16931901/django-combine-detailview-and-formview
