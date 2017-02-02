@@ -7,9 +7,13 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% for student in student_list %}
+		{% for student in students %}
 			<tr>
-				<td><a href="{% url 'studentform' student.group.id student.id %}">{{student.name}}</a></td>
+				{% if pk %}
+					<td><font color="FF00CC">{{student.name}}</font></td>
+				{% else %}
+					<td><a href="{% url 'update_student' student.group.id student.id %}">{{student.name}}</a></td>
+				{% endif %}
 				<td>{{student.brd_date}}</td>
 				<td>{{student.ticket}}</td>
 			</tr>

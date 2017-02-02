@@ -1,8 +1,6 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 
-# ==> create is_head  field to the Student model
-# ==> use group.student_set.all() to limit the selection
 
 class Group(models.Model):
     name = models.CharField(max_length=10, null=True)
@@ -12,19 +10,17 @@ class Group(models.Model):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        limit_choices_to={'group': 2},
+        # limit_choices_to={'group': 2},
     )
-    # head = models.ForeignKey('Student', related_name='+', null=True, unique=True)
 
     def __str__(self):
-        # return u'%s' % (self.name)
         return self.name
 
     def get_student_count(self):
-        return Student.objects.filter(group=self.id).count()
+        return self.student_set.all().count()
 
     def get_absolute_url(self):
-        return reverse('group', kwargs={'pk': str(self.id)})
+        return reverse('update_group', kwargs={'pk': str(self.id)})
 
 
 class Student(models.Model):
@@ -42,7 +38,7 @@ class Student(models.Model):
 
     def get_absolute_url(self):
         print(self.group.id)
-        return reverse('studentform', kwargs={
-            'pk': self.group.id,
-            'st_pk': self.id
+        return reverse('update_student', kwargs={
+            'gr_pk': self.group.id,
+            'pk': self.id
         })
