@@ -39,6 +39,7 @@ class GroupForm(ModelForm):
         self.fields['head'].widget.attrs = {
             'class': 'form-control',
         }
+        # Student list are limited to childs
         self.fields['head'].queryset = Student.objects.filter(group=self.instance)
         #self.fields['head'].queryset = group.student_set.all()
         #print(kwargs)
