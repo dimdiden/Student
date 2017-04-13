@@ -7,11 +7,15 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% for item in object_list %}
+		{% for group in object_list %}
 			<tr>
-				<td><a href="{% url 'update_group' item.id %}"> {{item.name}}</a></td>
-				<td>{{ item.get_student_count }}</a></td>
-				<td>{{ item.head }}</td>
+				<td><a href="{% url 'update_group' group.id %}"> {{group.name}}</a></td>
+				<td>{{ group.get_student_count }}</a></td>
+				{% if group.head %}
+				<td><a href="{% url 'update_student' group.head.id %}"> {{group.head.name}}</a></td>
+				{% else %}
+				<td></td>				
+				{% endif %}
 			</tr>	
 		{% endfor %}
 	</tbody>

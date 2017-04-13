@@ -6,7 +6,7 @@
     </div>
     <button type="submit" class="btn btn-info">Update Group</button>
 </form>
-<form action="{% url 'delete_group' gr_pk %}" method="post"> {% csrf_token %}
+<form action="{% url 'delete_group' pk %}" method="post"> {% csrf_token %}
     <input type="hidden" name="delete_group">
     <button type="submit" class="btn btn-danger">Delete Group!</button>
 </form>

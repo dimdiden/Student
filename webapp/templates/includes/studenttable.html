@@ -7,13 +7,20 @@
 		</tr>
 	</thead>
 	<tbody>
+		{% url 'update_student' pk as the_url %}
 		{% for student in students %}
 			<tr>
-				{% if pk %}
-					<td><font color="FF00CC">{{student.name}}</font></td>
-				{% else %}
-					<td><a href="{% url 'update_student' student.group.id student.id %}">{{student.name}}</a></td>
-				{% endif %}
+				<td>
+					{% if request.path == the_url and pk == student.id|stringformat:"i" %}
+						<b><font color="d43927">{{student.name}}</font></b>
+					{% else %}
+						{% if student == student.group.head %}
+							<a href="{% url 'update_student' student.id %}"><b>{{student.name}} [HEAD]</b></a>
+						{% else %}
+							<a href="{% url 'update_student' student.id %}">{{student.name}}</a>
+						{% endif %}
+					{% endif %}
+				</td>				
 				<td>{{student.brd_date}}</td>
 				<td>{{student.ticket}}</td>
 			</tr>

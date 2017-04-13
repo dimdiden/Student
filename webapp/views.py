@@ -1,5 +1,5 @@
 from django.urls import reverse
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.views.generic.edit import (
     DeleteView,
@@ -75,21 +75,19 @@ class StudentForm(ModelForm):
 class UpdateGroup(UpdateView):
     model = Group
     form_class = GroupForm
-    pk_url_kwarg = 'gr_pk'
     template_name = "group.html"
 
     def get_context_data(self, **kwargs):
         context = super(UpdateGroup, self).get_context_data(**kwargs)
-
-        self.group = get_object_or_404(Group, id=self.kwargs['gr_pk'])
         context['form_st'] = StudentForm(prefix='student')
-        context['students'] = self.group.student_set.all()
+        context['students'] = Student.objects.all().filter(group=self.kwargs['pk'])
         context.update(self.kwargs)
+        print(context)
         return context
 
     def get_success_url(self):
-        item = self.get_object()
-        return reverse('update_group', kwargs={'gr_pk': item.id})
+        return reverse('update_group', kwargs={'pk': self.kwargs['pk']})
+
 
 class UpdateStudent(UpdateView):
     model = Student
@@ -99,15 +97,9 @@ class UpdateStudent(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(UpdateStudent, self).get_context_data(**kwargs)
-        self.group = get_object_or_404(Group, id=self.kwargs['gr_pk'])
-        context['students'] = self.group.student_set.all()
+        context['students'] = Student.objects.all().filter(group=Student.objects.get(pk=self.kwargs['pk']).group)
         context.update(self.kwargs)
-        #print(context, self.group)
         return context
-
-    def get_success_url(self):
-        item = self.get_object()
-        return reverse('update_group', kwargs={'gr_pk': item.group.id})
 
 
 class CreateGroup(CreateView):
@@ -115,7 +107,6 @@ class CreateGroup(CreateView):
     form_class = GroupForm
 
     def post(self, request, *args, **kwargs):
-        # print(request.POST)
         if request.POST['group-name']:
             group_name = request.POST.get('group-name', False)
             # http://stackoverflow.com/questions/8133505/django-templateview-and-form
@@ -130,7 +121,7 @@ class CreateStudent(CreateView):
     form_class = StudentForm
 
     def post(self, request, *args, **kwargs):
-        # print(kwargs)
+
         if request.POST['student-name']:
             student_name = request.POST['student-name']
             student_brd_date = request.POST['student-brd_date']
@@ -140,25 +131,26 @@ class CreateStudent(CreateView):
                 name=student_name,
                 brd_date=student_brd_date,
                 ticket=student_ticket,
-                group=Group.objects.get(id=kwargs['gr_pk'])
+                group=Group.objects.get(pk=kwargs['pk'])
             )
             return redirect(
-                reverse('update_group', kwargs={'gr_pk': kwargs['gr_pk']})
+                # reverse('update_group', kwargs={'`k': kwargs['gr_pk']})
+                reverse('update_group', kwargs={'pk': kwargs['pk']})
             )
 
 
 class DeleteGroupView(DeleteView):
     model = Group
     success_url = "/"
-    pk_url_kwarg = 'gr_pk'
 
 
 class DeleteStudentView(DeleteView):
     model = Student
 
     def get_success_url(self):
-        item = self.get_object()
-        return reverse('update_group', kwargs={'gr_pk': item.group.id})
+        return reverse('update_group', kwargs={'pk': self.get_object().id})
+
+
 
 """
 # ==> form_class and template_name are extra since

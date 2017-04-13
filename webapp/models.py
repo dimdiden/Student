@@ -39,6 +39,5 @@ class Student(models.Model):
     def get_absolute_url(self):
         print(self.group.id)
         return reverse('update_student', kwargs={
-            'gr_pk': self.group.id,
             'pk': self.id
         })
