@@ -1,8 +1,21 @@
 {% extends "header.html" %}
 
 {% block options %}
-	{% include "includes/upd_groupform.html" %}
-    {% include "includes/new_studentform.html" %}
+
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#group">Update Group</a></li>
+    <li><a data-toggle="tab" href="#student">New Student</a></li>
+</ul>
+
+<div class="tab-content">
+    <div id="group" class="tab-pane fade in active">
+        {% include "includes/upd_groupform.html" %}
+    </div>
+    <div id="student" class="tab-pane fade">
+        {% include "includes/new_studentform.html" %}
+    </div>
+</div>
+
 {% endblock options %}
 
 {% block content %}

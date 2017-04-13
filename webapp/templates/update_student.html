@@ -1,7 +1,15 @@
 {% extends "header.html" %}
 
 {% block options %}
-	{% include "includes/upd_studentform.html" %} 
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#student">Update Student</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="student" class="tab-pane fade in active">
+            {% include "includes/upd_studentform.html" %} 
+        </div>
+    </div>
 {% endblock options %}
 
 {% block content %}

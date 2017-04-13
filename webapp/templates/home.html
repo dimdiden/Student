@@ -1,7 +1,17 @@
 {% extends "header.html" %}
 
 {% block options %}
-	{% include "includes/groupform.html" %}
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#group"> New Group</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="group" class="tab-pane fade in active">
+            {% include "includes/groupform.html" %}
+        </div>
+    </div>
+
 {% endblock options %}
 
 {% block content %}

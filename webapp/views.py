@@ -99,6 +99,7 @@ class UpdateStudent(UpdateView):
         context = super(UpdateStudent, self).get_context_data(**kwargs)
         context['students'] = Student.objects.all().filter(group=Student.objects.get(pk=self.kwargs['pk']).group)
         context.update(self.kwargs)
+        print(context)
         return context
 
 
@@ -148,7 +149,7 @@ class DeleteStudentView(DeleteView):
     model = Student
 
     def get_success_url(self):
-        return reverse('update_group', kwargs={'pk': self.get_object().id})
+        return reverse('update_group', kwargs={'pk': self.get_object().group.id})
 
 
 
