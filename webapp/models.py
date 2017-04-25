@@ -33,8 +33,8 @@ class Student(models.Model):
     def __str__(self):
         return self.name
 
-    def GetStundentCount(self):
-        return self.objects.count()
+    # def GetStundentCount(self):
+    #     return self.objects.count()
 
     def get_absolute_url(self):
         print(self.group.id)

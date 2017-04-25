@@ -10,11 +10,12 @@ from django.views.generic import ListView
 from django.forms import ModelForm
 from webapp.models import Group, Student
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 # ==> ListView doesn't provide post method
 #
-class HomeView(ListView):
-
+class HomeView(LoginRequiredMixin, ListView):
     model = Group
     template_name = "home.html"
 
@@ -72,7 +73,7 @@ class StudentForm(ModelForm):
         }
 
 
-class UpdateGroup(UpdateView):
+class UpdateGroup(LoginRequiredMixin, UpdateView):
     model = Group
     form_class = GroupForm
     template_name = "group.html"
@@ -89,7 +90,7 @@ class UpdateGroup(UpdateView):
         return reverse('update_group', kwargs={'pk': self.kwargs['pk']})
 
 
-class UpdateStudent(UpdateView):
+class UpdateStudent(LoginRequiredMixin, UpdateView):
     model = Student
     form_class = StudentForm
 
@@ -99,11 +100,11 @@ class UpdateStudent(UpdateView):
         context = super(UpdateStudent, self).get_context_data(**kwargs)
         context['students'] = Student.objects.all().filter(group=Student.objects.get(pk=self.kwargs['pk']).group)
         context.update(self.kwargs)
-        print(context)
+
         return context
 
 
-class CreateGroup(CreateView):
+class CreateGroup(LoginRequiredMixin, CreateView):
     model = Group
     form_class = GroupForm
 
@@ -117,7 +118,7 @@ class CreateGroup(CreateView):
             return HttpResponse("Please enter the group")
 
 
-class CreateStudent(CreateView):
+class CreateStudent(LoginRequiredMixin, CreateView):
     model = Student
     form_class = StudentForm
 
@@ -140,12 +141,12 @@ class CreateStudent(CreateView):
             )
 
 
-class DeleteGroupView(DeleteView):
+class DeleteGroupView(LoginRequiredMixin, DeleteView):
     model = Group
     success_url = "/"
 
 
-class DeleteStudentView(DeleteView):
+class DeleteStudentView(LoginRequiredMixin, DeleteView):
     model = Student
 
     def get_success_url(self):

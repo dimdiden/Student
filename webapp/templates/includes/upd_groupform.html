@@ -1,8 +1,7 @@
 <form action ="" method = "post"> {% csrf_token %}
     <div class="form-group">
         <!--<label for="Group">Group</label>-->
-        {{form.name}}
-        {{form.head}}
+        {{form.as_p}}
     </div>
     <button type="submit" class="btn btn-info">Update Group</button>
 </form>

@@ -2,7 +2,7 @@
     <div class="form-group">
         <!--<label for="Student">Student</label>-->
         {% load widget_tweaks %}
-        {{form_st.name}}
-        {{form_st.brd_date|attr:"type:date"}}
-        {{form_st.ticket}}
+        <p>{{form_st.name.label_tag}}{{form_st.name}}</p>
+        <p>{{form_st.brd_date.label_tag}}{{form_st.brd_date|attr:"type:date"}}</p>
+        <p>{{form_st.ticket.label_tag}}{{form_st.ticket}}</p>
     </div>

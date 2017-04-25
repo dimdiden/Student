@@ -15,19 +15,19 @@
 	<tbody>
 		{% for student in students %}
 			<tr>
-				<td>
-					{% if request.path == the_url and pk == student.id|stringformat:"i" %}
-						<b><font color="d43927">{{student.name}}</font></b>
+				{% if request.path == the_url and pk == student.id|stringformat:"i" %}
+					<td><b><font color="d43927">{{student.name}}</font></b></td>
+					<td><b><font color="d43927">{{student.brd_date}}</font></b></td>
+					<td><b><font color="d43927">{{student.ticket}}</font></b></td>
+				{% else %}
+					{% if student == student.group.head %}
+						<td><a href="{% url 'update_student' student.id %}"><b>{{student.name}} [HEAD]</b></a></td>
 					{% else %}
-						{% if student == student.group.head %}
-							<a href="{% url 'update_student' student.id %}"><b>{{student.name}} [HEAD]</b></a>
-						{% else %}
-							<a href="{% url 'update_student' student.id %}">{{student.name}}</a>
-						{% endif %}
-					{% endif %}
-				</td>				
-				<td>{{student.brd_date}}</td>
-				<td>{{student.ticket}}</td>
+						<td><a href="{% url 'update_student' student.id %}">{{student.name}}</a></td>
+					{% endif %}				
+                    <td>{{student.brd_date}}</td>
+                    <td>{{student.ticket}}</td>
+				{% endif %}
 			</tr>
 		{% endfor %}
 	</tbody>

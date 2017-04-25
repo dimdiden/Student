@@ -24,35 +24,30 @@
 <body class="body" style="background-color:#f6f6f6">
 	<div class="container-fluid" style="min-height:95%; ">
 		<div class="row">
-			  <div class="col-sm-2">
-				  <left>
-				  	<h3> <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>Student Database</h3>
-					<!-- <img src="{% static 'img/icon.jpg' %}" class="responsive-img" style='max-height:100px;' alt="face"> -->
-				  </left>
-			  </div>
-<!-- 			  <div class="col-sm-10">
-				  <br>
-				  <center>
-				  <h3>Student Database</h3>
-				  </center>
-			  </div> -->
+			<div class="col-sm-2">
+				<left>
+					<a href='/'>
+						<h3> <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>Student Database</h3>
+					</a>
+				</left>
+			</div>
 		</div>
 		<div class="row">
-		  <div class="col-sm-3">
-			<div class="well bs-sidebar" id="sidebar" style="background-color:#fff">
-			  <ul class="nav nav-pills nav-stacked">
-				<li><a href='/'>Home</a></li>			
-			  </ul>
+			<div class="col-sm-3">
+				<div class="well bs-sidebar" id="sidebar" style="background-color:#fff">
+					<ul class="nav nav-pills nav-stacked">
+						<li><a href='/'>Home</a></li>			
+					</ul>
+				</div>
+				{% block options %}
+				{% endblock options %}
 			</div>
-			{% block options %}
-			{% endblock options %}
-		  </div>
-		  <div class="col-sm-9">		  
-			<div class='container-fluid'>
-				{% block content %}
-				{% endblock content %}
+			<div class="col-sm-9">		  
+				<div class='container-fluid'>
+					{% block content %}
+					{% endblock content %}
+				</div>
 			</div>
-		  </div>
 		</div> 
 	</div>
 	<footer>
