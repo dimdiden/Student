@@ -24,34 +24,54 @@
 <body class="body" style="background-color:#f6f6f6">
 	<div class="container-fluid" style="min-height:95%; ">
 		<div class="row">
-			<div class="col-sm-2">
-				<left>
+			<div class="col-xs-4">
 					<a href='/'>
 						<h3> <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>Student Database</h3>
 					</a>
-				</left>
+			</div>
+			<div class='col-xs-8' align="right">
+				<p>
+					{% if request.user.is_authenticated %}
+						You are logged in as <b>'{{ request.user.username }}'</b>
+						<a href='/logout/'>
+						<p>Logout</p>
+						</a>
+					{% endif %}
+				</p>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-3">
 				<div class="well bs-sidebar" id="sidebar" style="background-color:#fff">
-					<ul class="nav nav-pills nav-stacked">
+					<!--<ul class="nav nav-pills nav-stacked">
 						<li><a href='/'>Home</a></li>			
-					</ul>
+					</ul>-->
+					<!--<ul class="nav nav-pills nav-stacked">
+						{% if description %}
+							<li>{{description}}</li>
+						{% endif %}
+					</ul>-->
+					<!--<ul class="nav nav-pills nav-stacked">
+					{% if request.path == the_url_group %}
+						<li>Group</li>
+					{% elif request.path == the_url_student %}
+						<li>Student</li>
+					{% else %}
+						<li>Home</li>
+					{% endif %}
+					</ul>-->
+				{% block description %}{% endblock description %}
 				</div>
-				{% block options %}
-				{% endblock options %}
+				{% block options %}{% endblock options %}
 			</div>
 			<div class="col-sm-9">		  
 				<div class='container-fluid'>
-					{% block content %}
-					{% endblock content %}
+					{% block content %}{% endblock content %}
 				</div>
 			</div>
 		</div> 
 	</div>
-	<footer>
+	<footer>		
 	</footer>	
-	
 </body>
 </html>

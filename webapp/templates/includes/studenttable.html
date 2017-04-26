@@ -1,12 +1,12 @@
-{% url 'update_student' pk as the_url %}
+{% url 'update_student' pk as the_url_student %}
 <table class="table">
 	<thead>
 		<tr>
 			<th>
 				Student Name
-				{% if request.path == the_url %}
+				<!--{% if request.path == the_url_student %}
 				<a href="{% url 'update_group' student.group.id %}"><b>[ Group {{student.group.name}} ]</b></a>
-				{% endif %}
+				{% endif %}-->
 			</th>
 			<th>Birth Date</th>
 			<th>Ticket</th>
@@ -15,7 +15,7 @@
 	<tbody>
 		{% for student in students %}
 			<tr>
-				{% if request.path == the_url and pk == student.id|stringformat:"i" %}
+				{% if request.path == the_url_student and pk == student.id|stringformat:"i" %}
 					<td><b><font color="d43927">{{student.name}}</font></b></td>
 					<td><b><font color="d43927">{{student.brd_date}}</font></b></td>
 					<td><b><font color="d43927">{{student.ticket}}</font></b></td>

@@ -2,8 +2,8 @@
     <div class="form-group">
         <!--<label for="Student">Student</label>-->
         {% load widget_tweaks %}
-        <p>{{form.group.label_tag}}{{form.group}}</p>
         <p>{{form.name.label_tag}}{{form.name}}</p>
+        <p>{{form.group.label_tag}}{{form.group}}</p>
         <p>{{form.brd_date.label_tag}}{{form.brd_date|attr:"type:date"}}</p>
         <p>{{form.ticket.label_tag}}{{form.ticket}}</p>
     </div>

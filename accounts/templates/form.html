@@ -1,5 +1,10 @@
 {% extends "header.html" %}
 
+{% block description %}
+    <p>Don't Have an Account?</p>
+    <p><a href="/register/">Click here to register</a></p>
+{% endblock description %}
+
 {% block options %}
 <form action ="" method = "post" novalidate> {% csrf_token %}
     <div class="form-group">
