@@ -7,12 +7,12 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% for group in object_list %}
+		{% for group in groups %}
 			<tr>
 				<td><a href="{% url 'update_group' group.id %}"> {{group.name}}</a></td>
 				<td>{{ group.get_student_count }}</a></td>
 				{% if group.head %}
-				<td><a href="{% url 'update_student' group.head.id %}"> {{group.head.name}}</a></td>
+				<td><a href="{% url 'update_student' group.head.id %}"> {{group.head.first_name}} {{group.head.last_name}}</a></td>
 				{% else %}
 				<td></td>				
 				{% endif %}

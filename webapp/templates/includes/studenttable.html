@@ -16,14 +16,14 @@
 		{% for student in students %}
 			<tr>
 				{% if request.path == the_url_student and pk == student.id|stringformat:"i" %}
-					<td><b><font color="d43927">{{student.name}}</font></b></td>
+					<td><b><font color="d43927">{{student.first_name}} {{student.last_name}}</font></b></td>
 					<td><b><font color="d43927">{{student.brd_date}}</font></b></td>
 					<td><b><font color="d43927">{{student.ticket}}</font></b></td>
 				{% else %}
 					{% if student == student.group.head %}
-						<td><a href="{% url 'update_student' student.id %}"><b>{{student.name}} [HEAD]</b></a></td>
+						<td><a href="{% url 'update_student' student.id %}"><b>{{student.first_name}} {{student.last_name}} [HEAD]</b></a></td>
 					{% else %}
-						<td><a href="{% url 'update_student' student.id %}">{{student.name}}</a></td>
+						<td><a href="{% url 'update_student' student.id %}">{{student.first_name}} {{student.last_name}}</a></td>
 					{% endif %}				
                     <td>{{student.brd_date}}</td>
                     <td>{{student.ticket}}</td>

@@ -2,8 +2,6 @@ from django import forms
 from django.contrib.auth import (
     authenticate,
     get_user_model,
-    login,
-    logout,
 )
 
 # This method will return the currently active user model
@@ -76,7 +74,7 @@ class UserRegisterForm(forms.ModelForm):
     def clean(self, *args, **kwargs):
         email = self.cleaned_data.get('email')
         email2 = self.cleaned_data.get('email2')
-        print(email, email2)
+ 
         if email != email2:
             raise forms.ValidationError("Emails must match")
 

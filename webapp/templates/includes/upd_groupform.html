@@ -1,11 +1,15 @@
-<form action ="" method = "post"> {% csrf_token %}
+<form action ="{% url 'update_group' pk %}" method = "post" novalidate> {% csrf_token %}
     <div class="form-group">
-        <!--<label for="Group">Group</label>-->
-        {{form.as_p}}
+        <p>{{form_gr.name.label_tag}}{{form_gr.name}}</p>
+        {{ form_gr.name.errors }}
+        <p>{{form_gr.head.label_tag}}{{form_gr.head}}</p>
+        {{ form_gr.head.errors }}
     </div>
     <button type="submit" class="btn btn-info">Update Group</button>
 </form>
-<form action="{% url 'delete_group' pk %}" method="post"> {% csrf_token %}
-    <input type="hidden" name="delete_group">
-    <button type="submit" class="btn btn-danger">Delete Group!</button>
-</form>
+{% if group.get_student_count == 0 %}
+   <form action="{% url 'delete_group' pk %}" method="post"> {% csrf_token %}
+        <input type="hidden" name="delete_group">
+        <button type="submit" class="btn btn-danger">Delete Group!</button>
+    </form> 
+{% endif %}

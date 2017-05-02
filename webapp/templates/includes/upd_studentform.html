@@ -1,15 +1,20 @@
-<form action ="" method = "post"> {% csrf_token %}
+<form action ="" method = "post" novalidate> {% csrf_token %}
     <div class="form-group">
-        <!--<label for="Student">Student</label>-->
         {% load widget_tweaks %}
-        <p>{{form.name.label_tag}}{{form.name}}</p>
+        <p>{{form.first_name.label_tag}}{{form.first_name}}</p>
+        {{ form.first_name.errors }}
+        <p>{{form.last_name.label_tag}}{{form.last_name}}</p>
+         {{ form.last_name.errors }}
         <p>{{form.group.label_tag}}{{form.group}}</p>
+        {{ form.group.errors }}
         <p>{{form.brd_date.label_tag}}{{form.brd_date|attr:"type:date"}}</p>
+        {{ form.brd_date.errors }}
         <p>{{form.ticket.label_tag}}{{form.ticket}}</p>
+        {{ form.ticket.errors }}
     </div>
-    <button type="submit" class="btn btn-info">Update</button>
+    <button type="submit" class="btn btn-info">Update Student</button>
 </form>
 <form action="{% url 'delete_student' pk %}" method="post"> {% csrf_token %}
     <input type="hidden" name="delete_student">
-    <button type="submit" class="btn btn-danger">Delete!</button>
+    <button type="submit" class="btn btn-danger">Delete Student!</button>
 </form>

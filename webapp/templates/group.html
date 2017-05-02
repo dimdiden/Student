@@ -1,10 +1,11 @@
 {% extends "header.html" %}
 
 {% block description %}
-    <p><b>Group {{object.name}}</b></p>
+    <p><b>Group {{group.name}}</b></p>
     <ul>
         <li>Look through student's list</li>
         <li>Change group data</li>
+        <li>Delete group in case it is empty</li>
         <li>Create new student for this group</li>
     </ul>
 {% endblock description %}
@@ -21,7 +22,7 @@
         {% include "includes/upd_groupform.html" %}
     </div>
     <div id="student" class="tab-pane fade">
-        {% include "includes/new_studentform.html" %}
+        {% include "includes/studentform.html" %}
     </div>
 </div>
 

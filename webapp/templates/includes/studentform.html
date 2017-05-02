@@ -1,8 +1,18 @@
-<form action ="{% url 'create_student' pk %}" method = "post"> {% csrf_token %}
+<form action ="{% url 'create_student' pk %}" method = "post" novalidate> {% csrf_token %}
     <div class="form-group">
         <!--<label for="Student">Student</label>-->
         {% load widget_tweaks %}
-        <p>{{form_st.name.label_tag}}{{form_st.name}}</p>
+        <p>{{form_st.first_name.label_tag}}{{form_st.first_name}}</p>
+        {{ form_st.first_name.errors }}
+        <p>{{form_st.last_name.label_tag}}{{form_st.last_name}}</p>
+        {{ form_st.last_name.errors }}
         <p>{{form_st.brd_date.label_tag}}{{form_st.brd_date|attr:"type:date"}}</p>
+        {{ form_st.brd_date.errors }}
         <p>{{form_st.ticket.label_tag}}{{form_st.ticket}}</p>
+        {{ form_st.ticket.errors }}
+        <!--<p>{{form_st.group.label_tag}}-->
+        <!--{{form_st.group|attr:"style:visibility:hidden"}}</p>-->
+        <!--{{ form_st.group.errors }}-->
     </div>
+    <button type="submit" class="btn btn-success">Save New Student</button>
+</form>

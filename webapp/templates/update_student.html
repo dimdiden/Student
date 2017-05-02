@@ -1,7 +1,7 @@
 {% extends "header.html" %}
 
 {% block description %}
-    <p><b>Student {{object.name}}</b><a href="{% url 'update_group' student.group.id %}"> Group {{student.group.name}}</a></p>
+    <p><b>Student {{object.first_name}} {{object.last_name}}</b><a href="{% url 'update_group' student.group.id %}"> Group {{student.group.name}}</a></p>
     <ul>
         <li>Change student data</li>
         <li>Look through group {{student.group}} list</li>

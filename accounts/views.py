@@ -1,53 +1,65 @@
+from django.shortcuts import redirect
 from django.contrib.auth import (
     authenticate,
-    get_user_model,
     login,
     logout,
+    get_user_model,
 )
-from django.shortcuts import render, redirect
+
+from django.views.generic import FormView, View
+from django.views.generic.edit import CreateView
+
 from .forms import UserLoginForm, UserRegisterForm
 
 
-def login_view(request):
-    next = request.GET.get('next')
-    title = 'Login'
-    form = UserLoginForm(request.POST or None)
+User = get_user_model()
 
-    if form.is_valid():
+
+class UserLoginView(FormView):
+    form_class = UserLoginForm
+    template_name = "login.html"
+
+    def form_valid(self, form):
         username = form.cleaned_data.get("username")
         password = form.cleaned_data.get("password")
         user = authenticate(username=username, password=password)
-        login(request, user)
+        login(self.request, user)
+        return super(UserLoginView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(UserLoginView, self).get_context_data(**kwargs)
+        context['title'] = 'Login'
+        return context
+
+    def get_success_url(self):
+        next = self.request.GET.get('next')
         if next:
-            return redirect(next)
-        return redirect('/')
-    return render(request, "form.html", {"form": form, "title": title})
+            return next
+        return '/'
 
 
-def register_view(request):
-    next = request.GET.get('next')
-    title = 'Register'
-    form = UserRegisterForm(request.POST or None)
+class UserRegisterView(CreateView):
+    model = User
+    form_class = UserRegisterForm
+    template_name = "register.html"
+    success_url = "/"
 
-    if form.is_valid():
-        user = form.save(commit=False)
+    def get_context_data(self, **kwargs):
+        context = super(UserRegisterView, self).get_context_data(**kwargs)
+        context['title'] = 'Register'
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
         password = form.cleaned_data.get('password')
-        user.set_password(password)
-        user.save()
-        new_user = authenticate(username=user.username, password=password)
-        login(request, new_user)
-        if next:
-            return redirect(next)
-        return redirect('/')
-
-    context = {
-        "form": form,
-        "title": title
-    }
-
-    return render(request, "form.html", context)
+        self.object.set_password(password)
+        self.object.save()
+        new_user = authenticate(username=self.object.username, password=password)
+        login(self.request, new_user)
+        return super(UserRegisterView, self).form_valid(form)
 
 
-def logout_view(request):
-    logout(request)
-    return redirect('login')
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('login')
