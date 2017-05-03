@@ -1,8 +1,15 @@
 {% extends "header.html" %}
 
+{% load edit %}
+{% load static %}
 {% block description %}
-    <p><b>Student {{object.first_name}} {{object.last_name}}</b><a href="{% url 'update_group' student.group.id %}"> Group {{student.group.name}}</a></p>
-    <ul>
+    <p>
+        {% if request.user.is_staff %}
+           <a href='{% edit object %}'><img src="{% static "img/icon-changelink.svg" %}" alt="Admin page link"/></a>
+        {% endif %} 
+    <b>Student {{object.first_name}} {{object.last_name}}, Group</b><a href="{% url 'update_group' student.group.id %}"> {{student.group.name}}</a>
+    </p> 
+   <ul>
         <li>Change student data</li>
         <li>Look through group {{student.group}} list</li>
     </ul>

@@ -1,7 +1,14 @@
 {% extends "header.html" %}
 
+{% load edit %}
+{% load static %}
 {% block description %}
-    <p><b>Group {{group.name}}</b></p>
+    <p>
+        {% if request.user.is_staff %}
+       <a href='{% edit group %}'><img src="{% static "img/icon-changelink.svg" %}" alt="Admin page link"/></a>
+        {% endif %} 
+        <b>Group {{group.name}}</b>
+    </p>
     <ul>
         <li>Look through student's list</li>
         <li>Change group data</li>

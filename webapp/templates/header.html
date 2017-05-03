@@ -23,7 +23,8 @@
 		}
 	</style>
 </head>
-
+{% load static %}
+{% load edit %}
 <body class="body" style="background-color:#f6f6f6">
 	<div class="container-fluid" style="min-height:95%; ">
 		<div class="row">
@@ -34,11 +35,11 @@
 			</div>
 			<div class='col-xs-8' align="right">
 				<p>
-					{% if request.user.is_authenticated %}
+					{% if request.user.is_staff %}
+	       				<a href='{% edit request.user %}'><img src="{% static "img/icon-changelink.svg" %}" alt="Admin page link"/></a>
+	       			{% endif %}
+	       			{% if request.user.is_authenticated %}
 						<b>{{ request.user.username }} | <a href='/logout/'>Logout</a></b>
-						<!--<a href='/logout/'>
-						<p>Logout</p>
-						</a>-->
 					{% endif %}
 				</p>
 			</div>
@@ -46,23 +47,6 @@
 		<div class="row">
 			<div class="col-sm-3">
 				<div class="well bs-sidebar" id="sidebar" style="background-color:#fff">
-					<!--<ul class="nav nav-pills nav-stacked">
-						<li><a href='/'>Home</a></li>			
-					</ul>-->
-					<!--<ul class="nav nav-pills nav-stacked">
-						{% if description %}
-							<li>{{description}}</li>
-						{% endif %}
-					</ul>-->
-					<!--<ul class="nav nav-pills nav-stacked">
-					{% if request.path == the_url_group %}
-						<li>Group</li>
-					{% elif request.path == the_url_student %}
-						<li>Student</li>
-					{% else %}
-						<li>Home</li>
-					{% endif %}
-					</ul>-->
 				{% block description %}{% endblock description %}
 				</div>
 				{% block options %}{% endblock options %}
