@@ -3,5 +3,6 @@
 /temp
 /query
 /db.sqlite3
+/students/settings_local.py
 students.sublime-project
 students.sublime-workspace
