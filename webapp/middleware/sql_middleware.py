@@ -1,4 +1,6 @@
+# As long as DEBUG is on:
 from django.db import connection
+from django.conf import settings
 
 
 class SQL_Middleware(object):
@@ -9,12 +11,15 @@ class SQL_Middleware(object):
 
         response = self.get_response(request)
 
-        time = 0
-        for query in connection.queries:
-            time = time + float(query['time'])
-            
-        sql = "Number of queries:%s | Time:%s" % (len(connection.queries), time)
+        if settings.DEBUG:
+            time = 0
+            for query in connection.queries:
+                time = time + float(query['time'])
 
-        response.content = response.content.decode().replace('</body>', '%s</body>' % sql).encode()
+            sql = "Number of queries:%s | Time:%s" % (len(connection.queries), time)
+
+            response.content = response.content.decode().replace('</body>', '%s</body>' % sql).encode()
+        else:
+            response.content = response.content.decode().replace('</body>', 'Server is in production mode</body>').encode()
 
         return response
